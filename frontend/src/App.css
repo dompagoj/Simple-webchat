@@ -1,0 +1,19 @@
+@import '~antd/dist/antd.css';
+
+.text-area {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid blue;
+  height: 500px;
+}
+.wrapper {
+  width: 50%;
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-gap: 20px;
+}
+/* 
+.chat-rows {
+  display: ;
+} */
