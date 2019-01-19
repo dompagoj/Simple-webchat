@@ -1,0 +1,24 @@
+.wrapper {
+  background: url('https://source.unsplash.com/collection/463870/1600x900');
+  background-repeat: no-repeat;
+  background-color: #666;
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+.form {
+  background: #fff;
+  box-shadow: 0 0 2rem -0.5rem #000;
+  border-radius: 1rem;
+  box-sizing: border-box;
+  padding: 60px 45px !important;
+  width: 350px;
+}
+.buttons-space {
+  display: flex;
+  justify-content: space-between;
+}

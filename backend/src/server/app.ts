@@ -1,34 +1,30 @@
 import express from 'express'
-import WebSocket from 'ws'
+import WebSocket from 'socket.io'
 import { createServer } from 'http'
 import cors from 'cors'
+import { handleSocketConnections } from './websocket/handler'
 
 async function main() {
   const app = express()
 
-  const server = createServer(app)
+  app.use(cors())
 
-  const wss = new WebSocket.Server({
-    server,
-  })
-
-  app.use(cors)
-
-  app.get('/', (req, res) => {
+  app.get('/hello', (req, res) => {
     res.send('bok')
   })
 
-  wss.on('connection', (ws: WebSocket) => {
-    console.log('CONNECTION!')
-    //connection is up, let's add a simple simple event
-    ws.on('message', (message: string) => {
-      //log the received message and send it back to the client
-      console.log('received: %s', message)
-      ws.send(`Hello, you sent -> ${message}`)
-    })
+  const server = createServer(app)
 
-    //send immediatly a feedback to the incoming connection
-    ws.send('Hi there, I am a WebSocket server')
+  const io = WebSocket(server)
+
+  io.on('connection', socket => {
+    console.log('Client connected!', socket.id)
+
+    handleSocketConnections(socket)
+
+    socket.on('disconnect', () => {
+      console.log('Client disconnected!', socket.id)
+    })
   })
 
   server.listen(8000, () => {
