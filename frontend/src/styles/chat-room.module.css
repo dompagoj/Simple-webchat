@@ -11,6 +11,3 @@
   grid-auto-columns: 1fr;
   grid-gap: 20px;
 }
-.chatroom-wrapper {
-  display: flex;
-}

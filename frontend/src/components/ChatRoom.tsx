@@ -2,12 +2,11 @@ import React from 'react'
 import { Button, Input } from 'antd'
 
 import { Socket } from '../socket'
-import styles from '../App.module.css'
+import styles from '../styles/chat-room.module.css'
 
 interface Props {
   title: string
   client: Socket
-  rootClass?: any
 }
 interface State {
   chatHistory: string[]
@@ -20,11 +19,11 @@ export class ChatRoom extends React.Component<Props, State> {
     msg: '',
   }
   public render() {
-    const { title, rootClass } = this.props
+    const { title } = this.props
     const { msg } = this.state
 
     return (
-      <div className={rootClass}>
+      <div>
         <h2>{title}</h2>
         <div>
           <div className={styles['text-area']}>
@@ -36,7 +35,7 @@ export class ChatRoom extends React.Component<Props, State> {
               )
             })}
           </div>
-          <Input name="msg" value={msg} onChange={this.onChange} />
+          <Input autoComplete="off" name="msg" value={msg} onChange={this.onChange} />
           <Button onClick={this.sendMessage}>Send</Button>
         </div>
       </div>

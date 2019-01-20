@@ -1,13 +1,16 @@
 import React from 'react'
-import Axios from 'axios'
 
 import { Input, Button, Form, Icon } from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
-
 import styles from '../styles/Login.module.css'
+import { RouteComponentProps, withRouter } from 'react-router'
+import { axios } from '../axios'
+import { observer } from 'mobx-react'
 
-interface Props extends FormComponentProps {}
+type extendedProps = FormComponentProps & RouteComponentProps<{}>
+interface Props extends extendedProps {}
 
+@observer
 class LoginComponent extends React.Component<Props> {
   public render() {
     const { getFieldDecorator } = this.props.form
@@ -16,16 +19,16 @@ class LoginComponent extends React.Component<Props> {
       <div className={styles.wrapper}>
         <div className={styles.form}>
           <Form onSubmit={this.onSubmit}>
-            <h2>Matija chat room</h2>
+            <h2>Matija web chat</h2>
             <Form.Item>
               {getFieldDecorator('username', {
                 rules: [{ required: true, message: 'Username is required' }],
-              })(<Input placeholder="Username" prefix={<Icon type="user" />} />)}
+              })(<Input autoComplete="off" placeholder="Username" prefix={<Icon type="user" />} />)}
             </Form.Item>
             <Form.Item>
-              {getFieldDecorator('chatRoom', {
+              {getFieldDecorator('chatRoomName', {
                 rules: [{ required: true, message: 'Room name is required' }],
-              })(<Input placeholder="Chat room name" prefix={<Icon type="wechat" />} />)}
+              })(<Input autoComplete="off" placeholder="Chat room name" prefix={<Icon type="wechat" />} />)}
             </Form.Item>
             <div className={styles['buttons-space']}>
               <Button type="primary" htmlType="submit">
@@ -42,7 +45,7 @@ class LoginComponent extends React.Component<Props> {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Gratz')
+        axios.post('/login', values)
       }
     })
   }
