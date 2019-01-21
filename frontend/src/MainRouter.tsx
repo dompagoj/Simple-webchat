@@ -4,7 +4,6 @@ import { observer } from 'mobx-react'
 
 import { Login } from './components/Login'
 import { MainLayout } from './MainLayout'
-import { authStore } from './stores/AuthStore'
 
 @observer
 class RouterComponent extends Component<RouteComponentProps<{}>> {

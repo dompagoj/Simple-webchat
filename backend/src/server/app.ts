@@ -1,11 +1,17 @@
-import express from 'express'
-import WebSocket from 'socket.io'
-import { createServer } from 'http'
-import cors from 'cors'
+// tslint:disable-next-line:no-var-requires
+require('dotenv').config()
+// tslint:disable-next-line:no-var-requires
+require('reflect-metadata')
 import bodyParser from 'body-parser'
+import cors from 'cors'
+import express from 'express'
+import { createServer } from 'http'
+import WebSocket from 'socket.io'
 
-import { handleSocketConnections } from './websocket/handler'
+import { createConnection } from 'typeorm'
+import { connectionOptions } from '../../ormconfig/ormconfig'
 import { mainRouter } from './api/main-router'
+import { handleSocketConnections } from './websocket/handler'
 
 async function main() {
   const app = express()
@@ -14,6 +20,8 @@ async function main() {
   app.use(bodyParser.json())
 
   app.use('/api', mainRouter)
+
+  await createConnection(connectionOptions)
 
   const server = createServer(app)
 

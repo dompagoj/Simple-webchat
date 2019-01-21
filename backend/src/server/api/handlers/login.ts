@@ -3,16 +3,14 @@ import { ChatRoom } from '../../../data/ChatRoom'
 import { User } from '../../../data/User'
 
 export async function handleLogin(req: Request, res: Response, next: NextFunction) {
-  const { username, chatRoomName } = req.body
+  const { username } = req.body
 
-  const p1 = User.create({
-    username,
-  })
-  const p2 = ChatRoom.create({
-    name: chatRoomName,
-  })
-
-  await Promise.all([p1, p2])
+  const user = await User.findOne({ where: { username } })
+  if (!user) {
+    await User.create({
+      username,
+    }).save()
+  }
 
   return res.status(200)
 }

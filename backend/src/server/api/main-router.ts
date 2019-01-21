@@ -4,4 +4,4 @@ import { checkBody } from './middlewares/check-body'
 
 export const mainRouter = Router()
 
-mainRouter.post('/login', checkBody(['username', 'chatRoomName']), handleLogin)
+mainRouter.post('/login', checkBody(['username']), handleLogin)

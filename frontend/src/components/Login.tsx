@@ -25,16 +25,16 @@ class LoginComponent extends React.Component<Props> {
                 rules: [{ required: true, message: 'Username is required' }],
               })(<Input autoComplete="off" placeholder="Username" prefix={<Icon type="user" />} />)}
             </Form.Item>
-            <Form.Item>
+            {/* <Form.Item>
               {getFieldDecorator('chatRoomName', {
                 rules: [{ required: true, message: 'Room name is required' }],
               })(<Input autoComplete="off" placeholder="Chat room name" prefix={<Icon type="wechat" />} />)}
-            </Form.Item>
+            </Form.Item> */}
             <div className={styles['buttons-space']}>
               <Button type="primary" htmlType="submit">
                 Enter
               </Button>
-              <Button>Create new room</Button>
+              {/* <Button>Create new room</Button> */}
             </div>
           </Form>
         </div>
@@ -43,9 +43,12 @@ class LoginComponent extends React.Component<Props> {
   }
   public onSubmit = e => {
     e.preventDefault()
+
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        axios.post('/login', values)
+        axios.post('/login', values).then(() => {
+          this.props.history.push('/chat-rooms')
+        })
       }
     })
   }

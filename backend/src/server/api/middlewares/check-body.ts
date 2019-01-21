@@ -1,8 +1,8 @@
-import { Request, Response, NextFunction } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { difference } from 'lodash'
 
 export function checkBody(params: string[]) {
-  return function(req: Request, res: Response, next: NextFunction) {
+  return (req: Request, res: Response, next: NextFunction) => {
     const diff = difference(params, Object.keys(req.body))
 
     if (diff.length > 0) {

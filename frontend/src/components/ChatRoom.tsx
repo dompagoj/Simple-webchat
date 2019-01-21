@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Input } from 'antd'
+import { Button, Input, Icon } from 'antd'
 
 import { Socket } from '../socket'
 import styles from '../styles/chat-room.module.css'
@@ -35,8 +35,10 @@ export class ChatRoom extends React.Component<Props, State> {
               )
             })}
           </div>
-          <Input autoComplete="off" name="msg" value={msg} onChange={this.onChange} />
-          <Button onClick={this.sendMessage}>Send</Button>
+          <form className={styles.chatroomSendForm} onSubmit={this.sendMessage}>
+            <Input style={{ width: '85%' }} autoComplete="off" name="msg" value={msg} onChange={this.onChange} />
+            <Button type="primary" shape="circle" icon="right-circle" htmlType="submit" onClick={this.sendMessage} />
+          </form>
         </div>
       </div>
     )
@@ -64,7 +66,9 @@ export class ChatRoom extends React.Component<Props, State> {
       [event.target.name]: event.target.value,
     })
   }
-  public sendMessage = () => {
+  public sendMessage = e => {
+    e.preventDefault()
+
     if (this.state.msg === '') return
 
     this.props.client.sendMsg(this.state.msg)
