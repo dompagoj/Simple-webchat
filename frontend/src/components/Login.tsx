@@ -6,6 +6,7 @@ import styles from '../styles/Login.module.css'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { axios } from '../axios'
 import { observer } from 'mobx-react'
+import { userStore } from '../stores/UserStore'
 
 type extendedProps = FormComponentProps & RouteComponentProps<{}>
 interface Props extends extendedProps {}
@@ -41,14 +42,14 @@ class LoginComponent extends React.Component<Props> {
       </div>
     )
   }
-  public onSubmit = e => {
+  public onSubmit = async e => {
     e.preventDefault()
 
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields(async (err, values) => {
       if (!err) {
-        axios.post('/login', values).then(() => {
-          this.props.history.push('/chat-rooms')
-        })
+        const { data } = await axios.post('/login', values)
+        userStore.me = data.user
+        this.props.history.push('/chat-rooms')
       }
     })
   }

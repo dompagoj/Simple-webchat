@@ -1,4 +1,5 @@
 import io from 'socket.io-client'
+import { ChatMessage } from './components/ChatRoom'
 
 export class Socket {
   private socket: SocketIOClient.Socket
@@ -7,7 +8,7 @@ export class Socket {
     this.socket = io.connect(uri)
   }
 
-  public sendMsg(message: string) {
+  public sendMsg(message: ChatMessage) {
     this.socket.emit('message', { message })
   }
   public registerNewMsg(handler: (result: Message) => void) {

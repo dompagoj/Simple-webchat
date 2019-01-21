@@ -27,13 +27,13 @@ async function main() {
 
   const io = WebSocket(server)
 
-  io.on('connection', socket => {
-    console.log('Client connected!', socket.id)
+  io.on('connection', client => {
+    console.log('Client connected!', client.id)
 
-    handleSocketConnections(socket)
+    handleSocketConnections(client)
 
-    socket.on('disconnect', () => {
-      console.log('Client disconnected!', socket.id)
+    client.on('disconnect', () => {
+      console.log('Client disconnected!', client.id)
     })
   })
 

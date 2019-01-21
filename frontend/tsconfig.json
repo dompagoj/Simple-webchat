@@ -16,7 +16,8 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "noEmit": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "strictPropertyInitialization": false
   },
   "include": ["src"]
 }

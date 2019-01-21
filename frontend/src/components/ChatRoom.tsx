@@ -3,13 +3,20 @@ import { Button, Input, Icon } from 'antd'
 
 import { Socket } from '../socket'
 import styles from '../styles/chat-room.module.css'
+import { userStore, User } from '../stores/UserStore'
 
 interface Props {
   title: string
   client: Socket
 }
+
+export interface ChatMessage {
+  msg: string
+  user: User
+}
+
 interface State {
-  chatHistory: string[]
+  chatHistory: ChatMessage[]
   msg: string
 }
 
@@ -24,13 +31,15 @@ export class ChatRoom extends React.Component<Props, State> {
 
     return (
       <div>
-        <h2>{title}</h2>
+        <h2 style={{ textAlign: 'center' }}>
+          {title} - {userStore.me!.username}
+        </h2>
         <div>
           <div className={styles['text-area']}>
             {this.state.chatHistory.map((msg, i) => {
               return (
                 <span key={i} className={styles['chat-rows']}>
-                  {msg}
+                  {msg.user.username}: {msg.msg}
                 </span>
               )
             })}
@@ -51,13 +60,13 @@ export class ChatRoom extends React.Component<Props, State> {
   }
 
   public onMsgRecieved = entry => {
-    console.log('Recieved msg! ', entry)
-
     this.updateChatHistory(entry)
   }
 
   public updateChatHistory = ({ message }) => {
-    this.setState({ chatHistory: this.state.chatHistory.concat(message) })
+    const { chatHistory } = this.state
+
+    this.setState({ chatHistory: [...chatHistory, message] })
   }
 
   public onChange = event => {
@@ -71,7 +80,10 @@ export class ChatRoom extends React.Component<Props, State> {
 
     if (this.state.msg === '') return
 
-    this.props.client.sendMsg(this.state.msg)
+    this.props.client.sendMsg({
+      msg: this.state.msg,
+      user: userStore.me!,
+    })
     return this.setState({ msg: '' })
   }
 }
