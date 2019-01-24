@@ -17,7 +17,7 @@ export class MainLayout extends Component<any, State> {
   render() {
     return (
       <div className={styles['chatroom-wrapper']}>
-        <ChatRoom title="Matija chatroom" client={this.state.client} />
+        <ChatRoom title="Chatroom" client={this.state.client} />
       </div>
     )
   }

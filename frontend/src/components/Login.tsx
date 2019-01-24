@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Input, Button, Form, Icon } from 'antd'
+import { Input, Button, Form, Icon, message } from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
 import styles from '../styles/Login.module.css'
 import { RouteComponentProps, withRouter } from 'react-router'
@@ -20,7 +20,7 @@ class LoginComponent extends React.Component<Props> {
       <div className={styles.wrapper}>
         <div className={styles.form}>
           <Form onSubmit={this.onSubmit}>
-            <h2>Matija web chat</h2>
+            <h2>Web chat</h2>
             <Form.Item>
               {getFieldDecorator('username', {
                 rules: [{ required: true, message: 'Username is required' }],
@@ -47,6 +47,9 @@ class LoginComponent extends React.Component<Props> {
 
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
+        if (!'WebSocket' in window) {
+          return message.error('Your browser doesnt support websockets, sorry')
+        }
         const { data } = await axios.post('/login', values)
         userStore.me = data.user
         this.props.history.push('/chat-rooms')
